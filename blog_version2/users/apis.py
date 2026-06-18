@@ -111,6 +111,12 @@ class ProfileAPIView(ApiAuthMixin, APIView):
         query = get_profile(user=request.user)
 
         return Response(
-            data=ProfileOutputSerializer(query, context={"request": request}, many=True).data,
+            data=ProfileOutputSerializer(query, context={"request": request}).data,
             status=status.HTTP_200_OK,
         )
+    
+
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MjM3ODA1OCwiaWF0IjoxNzgxNzczMjU4LCJqdGkiOiI5NmMxNDEzMDI1ZmQ0YzJiYTVkMjIwNDY5YzhkZjdlYyIsInVzZXJfaWQiOiIxIn0.B5hM7WYLwmx__bkadgRwM_ROsIx3fqSrjGdSPyE5fAU",
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzgxNzczNTU4LCJpYXQiOjE3ODE3NzMyNTgsImp0aSI6ImI3YzU1YWUyYTYzZTRjMmRiMmViNTEzZGFmYTlmYzEyIiwidXNlcl9pZCI6IjEifQ.nzJLHmXatuqxOZLf6U7iyvRQ9pCPGs1vEGLgYHwWVys"
+}
