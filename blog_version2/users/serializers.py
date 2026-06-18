@@ -1,4 +1,4 @@
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import MinLengthValidator
@@ -45,11 +45,20 @@ class RegisterInputSerializer(serializers.ModelSerializer):
     
 
 class RegisterOutputSerializer(serializers.ModelSerializer):
-    
+    token = serializers.SerializerMethodField("get_token")
     class Meta:
         model = BaseUser
-        fields = ("username", "email", "created_at",)
+        fields = ("username", "token", "email", "created_at",)
+    
+    def get_token(self, user):
+        output_data = {}
+        refresh_token = RefreshToken.for_user(user=user)
 
+        output_data["refresh"] = str(refresh_token)
+        output_data["access"] = str(refresh_token.access_token)
+
+        return output_data
+    
     
 class ProfileOutputSerializer(serializers.ModelSerializer):
     
