@@ -113,7 +113,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    
+    {'NAME': 'blog_version2.users.validators.NumberValidator'},
+    {'NAME': 'blog_version2.users.validators.LetterValidator'},
+    {'NAME': 'blog_version2.users.validators.SpecialCharValidator'},
 ]
+
 AUTH_USER_MODEL = 'users.BaseUser'
 
 # Internationalization
@@ -168,12 +173,10 @@ CACHE_TTL = 60 * 15
 APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTH_PASSWORD_VALIDATORS = [
-    # ... existing validators
-    {'NAME': 'path.to.NumberValidator'},
-    {'NAME': 'path.to.LetterValidator'},
-    {'NAME': 'path.to.SpecialCharValidator'},
-]
+
+{'NAME': 'blog_version2.users.validators.NumberValidator'},
+{'NAME': 'blog_version2.users.validators.LetterValidator'},
+{'NAME': 'blog_version2.users.validators.SpecialCharValidator'},
 
 CSRF_SESSION_KEY = "yourrandomsecretkey"
 WTF_CSRF_ENABLED = True

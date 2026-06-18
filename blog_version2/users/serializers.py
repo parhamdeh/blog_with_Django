@@ -15,9 +15,9 @@ class RegisterInputSerializer(serializers.ModelSerializer):
     password = serializers.CharField(validators=[
                                                 validate_password,
                                                 MinLengthValidator(limit_value=10),
-                                                LetterValidator,
-                                                NumberValidator,
-                                                SpecialCharValidator
+                                                LetterValidator(),
+                                                NumberValidator(),
+                                                SpecialCharValidator()
                                                 ])
     confirm_password = serializers.CharField()
     bio = serializers.CharField(max_length=1000, required=False)
@@ -29,10 +29,12 @@ class RegisterInputSerializer(serializers.ModelSerializer):
     def validate_email(self, email:str):
         if BaseUser.objects.filter(email=email).exists():
             raise serializers.ValidationError("email already taken")
+        return email
         
     def validate_username(self, username:str):
         if BaseUser.objects.filter(email=username).exists():
             raise serializers.ValidationError("username already taken")
+        return username
 
     def validate(self, attrs:dict):
         if attrs.get("password") != attrs.get("confirm_password"):

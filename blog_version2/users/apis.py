@@ -75,7 +75,7 @@ class RegisterAPIView(APIView):
         )
 
 
-class ProfileAPIView(APIView):
+class ProfileAPIView(ApiAuthMixin, APIView):
     """
     API endpoint for retrieving the authenticated user's profile.
 

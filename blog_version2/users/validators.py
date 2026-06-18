@@ -5,6 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class NumberValidator:
+    def __call__(self, value):
+        self.validate(value)
+
     def validate(self, password, user=None):
         if re.search(r'[0-9]', password) is None:
             raise ValidationError(
@@ -17,6 +20,9 @@ class NumberValidator:
 
 
 class LetterValidator:
+    def __call__(self, value):
+        self.validate(value)
+
     def validate(self, password, user=None):
         if re.search(r'[a-zA-Z]', password) is None:
             raise ValidationError(
@@ -29,6 +35,9 @@ class LetterValidator:
 
 
 class SpecialCharValidator:
+    def __call__(self, value):
+        self.validate(value)
+
     def validate(self, password, user=None):
         if re.search(r'[@_!#$%^&*()<>?/\|}{~:]', password) is None:
             raise ValidationError(
@@ -37,4 +46,4 @@ class SpecialCharValidator:
             )
 
     def get_help_text(self):
-        return _("Your password must include at least one special character: @_!#$%^&*()<>?/\\|}{~:")
+        return _("Your password must include at least one special character.")
