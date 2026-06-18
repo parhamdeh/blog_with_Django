@@ -1,5 +1,5 @@
 from django.db.models import QuerySet
-from users.models import Profile, BaseUser
+from blog_version2.users.models import Profile, BaseUser
 
-def get_profile(user:BaseUser) -> QuerySet[Profile]:
+def get_profile(user:BaseUser) -> Profile:
     return Profile.objects.get(user=user)

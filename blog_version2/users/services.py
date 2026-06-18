@@ -1,19 +1,17 @@
-from .models import Profile, BaseUser
+from blog_version2.users.models import Profile, BaseUser
 
-from django.db.models import QuerySet
 from django.db import transaction
 
 
 
-def create_profile(*, user:BaseUser, bio:str | None) -> QuerySet[Profile]:
+def create_profile(*, user:BaseUser, bio:str | None) -> Profile:
     return Profile.objects.create(user=user, bio=bio)
     
-
-def create_user(*, username:str, email:str, password:str) -> QuerySet[BaseUser]:
+def create_user(*, username:str, email:str, password:str) -> BaseUser:
     return BaseUser.objects.create_user(username=username, email=email, password=password)
 
 @transaction.atomic
-def register(*, bio:str, username:str, email:str, password:str) -> QuerySet[BaseUser]:
+def register(*, bio:str, username:str, email:str, password:str) -> BaseUser:
     user = create_user(username=username, email=email, password=password)
     create_profile(user=user, bio=bio)
 

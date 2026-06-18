@@ -6,8 +6,8 @@ from django.core.validators import MinLengthValidator
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from users.validators import LetterValidator, NumberValidator, SpecialCharValidator
-from users.models import BaseUser, Profile
+from blog_version2.users.validators import LetterValidator, NumberValidator, SpecialCharValidator
+from blog_version2.users.models import BaseUser, Profile
 
 
 
