@@ -17,7 +17,8 @@ LOCAL_APPS = [
     'blog_version2.core.apps.CoreConfig',
     'blog_version2.common.apps.CommonConfig',
     'blog_version2.users.apps.UsersConfig',
-    'blog_version2.authentication.apps.AuthenticationConfig'
+    'blog_version2.authentication.apps.AuthenticationConfig',
+    'blog_version2.home.apps.HomeConfig',
     
 ]
 
