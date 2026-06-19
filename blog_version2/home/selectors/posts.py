@@ -1,28 +1,45 @@
-from django.db.models import QuerySet
 from blog_version2.users.models import BaseUser
 from blog_version2.home.models import Posts, Subscription
 from blog_version2.home.filters import PostFilter
 
+from django.db.models import QuerySet
+from django.db.models import Q
 
 
-def post_detail(*, slug:str, user:BaseUser, self_include:bool = True) -> QuerySet[Posts]:
-    subscription = list(Subscription.objects.filter(subscriber=user).values_list("target", flat=True))
-     # Include current user's own posts if requested
+
+def post_detail(*, slug: str, user: BaseUser, self_include: bool = True) -> Posts:
+    subscription = Subscription.objects.filter(
+        subscriber=user
+    ).values_list("target", flat=True)
+
     if self_include:
         subscription.append(user.id)
-    # Return a post by slug only if its author is in the allowed list
-    return Posts.objects.get(slug=slug, author__in=subscription)
+    # Public posts are visible to everyone.
+    # Private posts are visible only to followers.
+    filters = (
+        Q(author__is_private=False) |
+        Q(author__in=subscription)
+    )
 
-def post_list(*, filters=None, user:BaseUser, self_include:bool = True) -> QuerySet[Posts]:
+    return Posts.objects.get(filters, slug=slug)
+
+def post_list(*, filters=None, user: BaseUser, self_include: bool = True) -> QuerySet[Posts]:
     filters = filters or {}
-    subscription = list(Subscription.objects.filter(subscriber=user).values_list("target", flat=True))
+
+    subscription = Subscription.objects.filter(
+        subscriber=user
+    ).values_list("target", flat=True)
+    
+    # Public authors are always visible.
+    # Private authors require an active subscription.
+    visibility_filter = (
+        Q(author__is_private=False) |
+        Q(author__in=subscription)
+    )
 
     if self_include:
-        subscription.append(user.id)
+        visibility_filter |= Q(author=user)
 
-    # Return filtered posts from followed users (and optionally self)
-    if subscription:
-        qs = Posts.objects.filter(author__in=subscription)
-        return PostFilter(filters, qs).qs
-    
-    return Posts.objects.none()
+    qs = Posts.objects.filter(visibility_filter)
+
+    return PostFilter(filters, qs).qs

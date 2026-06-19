@@ -67,6 +67,7 @@ class BaseUser(BaseModel, AbstractBaseUser, PermissionsMixin):
         },
     )
     email = models.EmailField(verbose_name=("email address"), unique=True)
+    is_private = models.BooleanField(default=False)
     is_admin = models.BooleanField(
         default=False,
         help_text=_("Designates whether the user can log into this admin site."),

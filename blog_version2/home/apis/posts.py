@@ -16,6 +16,14 @@ from drf_spectacular.utils import extend_schema
 
 
 class PostAPIView(ApiAuthMixin, APIView):
+    """
+    API endpoint for creating and listing posts.
+
+    Features:
+    - Create a new post for the authenticated user.
+    - Retrieve posts from subscribed authors.
+    - Support filtering and pagination.
+    """
     class Pagination(LimitOffsetPagination):
         default_limit = 10
 
@@ -24,6 +32,19 @@ class PostAPIView(ApiAuthMixin, APIView):
         responses=PostOutputSerializer,
         )
     def post(self, request:Request) -> Response:
+        """
+        Create a new post.
+
+        Creates a post owned by the authenticated user and
+        returns the serialized post data.
+
+        Returns:
+            201 Created:
+                Post successfully created.
+
+            400 Bad Request:
+                Validation or database error.
+        """
         serializer = PostInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -49,6 +70,26 @@ class PostAPIView(ApiAuthMixin, APIView):
         responses=PostOutputSerializer,
         )
     def get(self, request:Request) -> Response:
+        """
+        List posts visible to the authenticated user.
+
+        Retrieves posts from subscribed users and optionally
+        applies filtering and pagination.
+
+        Supported filters:
+        - title
+        - slug
+        - search
+        - author__in
+        - created_at__range
+
+        Returns:
+            200 OK:
+                Paginated list of posts.
+
+            400 Bad Request:
+                Invalid filter parameters or database error.
+        """
         filter_serializer = FilterPostSerializer(data=request.query_params)
         filter_serializer.is_valid(raise_exception=True)
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from blog_with_Django.blog_version2.home.models import Subscription
+from blog_version2.home.models import Subscription
 
 
 class SubscribeInputSerializer(serializers.Serializer):
@@ -11,7 +11,7 @@ class SubscribeOutputSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = ("email", )
+        fields = ("username", )
 
     def get_username(self, subscription):
         return subscription.target.username
